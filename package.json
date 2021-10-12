@@ -2,9 +2,9 @@
   "name": "API-NODEJS-EXPRESS-SEQUELIZE-MYSQL",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "src/index.js": "nodemon src/index.js"
+    "src/server.js": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "DevsTeamMaster",

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const mysqlConnection = require('../database');
+const mysqlConnection = require('../../db/db');
 
 //GET ALL
 router.get('/productos', (req, res) => {
