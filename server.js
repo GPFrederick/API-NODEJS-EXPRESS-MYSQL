@@ -1,4 +1,4 @@
-//To run server <npm run src/index.js>
+//To run server <npm run src/server.js>
 
 const express = require('express');
 const app = express();
