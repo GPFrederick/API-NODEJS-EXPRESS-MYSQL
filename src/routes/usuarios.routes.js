@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 
@@ -7,13 +6,23 @@ const mysqlConnection = require('../../db/db');
 //GET ALL
 router.get('/usuarios', (req, res) => {
   //query = consulta
-  mysqlConnection.query('SELECT * FROM Usuarios', (err, rows, fields) => {
-    if (!err) {
-      res.json(rows);
-    } else {
-      console.log(err);
+  mysqlConnection.query(
+    `SELECT u.usu_nombre, u.usu_apellido, r.nombre_rol,
+    CASE
+    WHEN idEstado = 1 THEN 'Activo'
+    WHEN idEstado = 0 THEN 'Inactivo'
+    END AS idEstadoToString
+    FROM Usuarios AS u
+    INNER JOIN Roles AS r
+    ON u.idRol = r.idRol`,
+    (err, rows, fields) => {
+      if (!err) {
+        res.json(rows);
+      } else {
+        console.log(err);
+      }
     }
-  });
+  );
 });
 
 //GET BY ID
@@ -41,7 +50,7 @@ router.post('/usuarios/create', (req, res) => {
   const usuariosObject = {
     usu_nombre: req.body.nameUser,
     usu_apellido: req.body.lastNameUser,
-    email: req.body.emailUser
+    email: req.body.emailUser,
   };
 
   mysqlConnection.query(sql, usuariosObject, (err, rows, fields) => {
@@ -84,47 +93,46 @@ router.post('/create', (req, res) => {
 */
 //UPDATE
 router.patch('/usuarios/update/:idUsuario', (req, res) => {
-    //Get the param
-    const { idUsuario } = req.params;
-  
-    //Get the body
-    const { descripcion_producto, precio_producto, cantidad_producto, idEstado } =
-      req.body;
-  
-    mysqlConnection.query(
-      'UPDATE Productos SET descripcion_producto = ?, precio_producto = ?, cantidad_producto = ?, idEstado = ? WHERE idProducto = ?',
-      [
-        descripcion_producto,
-        precio_producto,
-        cantidad_producto,
-        idEstado,
-        idProducto,
-      ],
-      (err, rows, fields) => {
-        if (!err) {
-          res.json({ Status: 'Producto actualizado.' });
-        } else {
-          console.log(err);
-        }
+  //Get the param
+  const { idUsuario } = req.params;
+
+  //Get the body
+  const { descripcion_producto, precio_producto, cantidad_producto, idEstado } =
+    req.body;
+
+  mysqlConnection.query(
+    'UPDATE Productos SET descripcion_producto = ?, precio_producto = ?, cantidad_producto = ?, idEstado = ? WHERE idProducto = ?',
+    [
+      descripcion_producto,
+      precio_producto,
+      cantidad_producto,
+      idEstado,
+      idProducto,
+    ],
+    (err, rows, fields) => {
+      if (!err) {
+        res.json({ Status: 'Producto actualizado.' });
+      } else {
+        console.log(err);
       }
-    );
-  });
-  
-  //DELETE
-  router.delete('/productos/delete/:idProducto', (req, res) => {
-    const { idProducto } = req.params;
-    mysqlConnection.query(
-      'DELETE FROM Productos WHERE idProducto = ?',
-      [idProducto],
-      (err, rows, fields) => {
-        if (!err) {
-          res.json({ status: 'Producto eliminado.' });
-        } else {
-          console.log(err);
-        }
+    }
+  );
+});
+
+//DELETE
+router.delete('/productos/delete/:idProducto', (req, res) => {
+  const { idProducto } = req.params;
+  mysqlConnection.query(
+    'DELETE FROM Productos WHERE idProducto = ?',
+    [idProducto],
+    (err, rows, fields) => {
+      if (!err) {
+        res.json({ status: 'Producto eliminado.' });
+      } else {
+        console.log(err);
       }
-    );
-  });
-  
-  module.exports = router;
-  
+    }
+  );
+});
+
+module.exports = router;

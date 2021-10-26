@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-   "src/server.js": "node src/server.js"
+    "server.js": "nodemon server.js"
   },
   "keywords": [],
   "author": "DevsTeamMaster",
