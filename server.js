@@ -18,6 +18,7 @@ app.use(cors(corsOptions));
 //Routes
 app.use(require('./src/routes/productos.routes'));
 app.use(require('./src/routes/usuarios.routes'));
+app.use(require('./src/routes/ventas.routes'));
 
 //Starting server
 app.listen(app.get('port'), () => {
